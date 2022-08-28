@@ -13,9 +13,37 @@ function accessAnim(el,del){
         {transform: "scale(1)", offset:1}
     ], {
         duration: animationDuration,
+        easing: "ease-in-out",
+        delay:del,
+    })
+}
+function appearAnim(el, del){
+    el.animate([
+        {transform:"scale(0)", offset:0},
+        {transform:"scale(1.2)", offset:.5},
+        {transform:"scale(1)", offset:1}
+    ], {
+        duration: animationDuration,
+        fill:"forwards",
         easing: "ease-in",
         delay:del,
     })
+    setTimeout(()=>{el.style.display = "flex"}, del+1)
+    return del+animationDuration
+}
+function rotateAppearAnim(el, del){
+    el.animate([
+        {transform:"scale(0) rotate(-30deg)", offset:0},
+        {transform:"scale(1.2) rotate(30deg)", offset:.7},
+        {transform:"scale(1) rotate(0)", offset:1}
+    ], {
+        duration: animationDuration,
+        fill:"forwards",
+        easing: "ease-in",
+        delay:del,
+    })
+    setTimeout(()=>{el.style.display = "block"}, del+1)
+    return del+animationDuration
 }
 function updateAnim(el,del){
     el.animate([
@@ -51,55 +79,52 @@ function createArrow(){
     arrow.classList.add("fa-solid", "fa-arrow-right-long")
     return arrow
 }
-function linkedListSet(){
+function chainAnimation(idx){
     let nextDelay=0
-    for (let i = 0; i < setIndex.value;i++){
+    for (let i = 0; i < idx;i++){
         accessAnim(linkedlist[i],nextDelay)
         nextDelay+=animationDuration
         let arrow = animationContainer.children.item(i*2+1)
         accessAnim(arrow,nextDelay)
         nextDelay+=animationDuration
     }
+    return nextDelay
+}
+function linkedListSet(){
+    let nextDelay = chainAnimation(setIndex.value)
     updateAnim(linkedlist[setIndex.value],nextDelay)
     nextDelay+=animationDuration
     setTimeout(() => {linkedlist[setIndex.value].innerText=setData.value}, nextDelay)
 }
 function linkedListAdd(){
-    let nextDelay=0
     const variable=createVar(addData.value)
     const arrow=createArrow()
-    for (let i = 0; i < linkedlist.length;i++){
-        accessAnim(linkedlist[i],nextDelay)
-        nextDelay+=animationDuration
-        accessAnim(animationContainer.children.item(i*2+1),nextDelay)
-        nextDelay+=animationDuration
-    }
     linkedlist[linkedlist.length]=variable
-    setTimeout(() => {
-        animationContainer.appendChild(variable)
-        animationContainer.appendChild(arrow)
-    }, nextDelay)
+    animationContainer.appendChild(variable)
+    animationContainer.appendChild(arrow)
+    let nextDelay=chainAnimation(linkedlist.length-1)
+    nextDelay=appearAnim(variable,nextDelay)
+    nextDelay=rotateAppearAnim(arrow, nextDelay)
 }
 function linkedListInsert(){
-    let nextDelay=0
     const variable=createVar(insertData.value)
     const arrow=createArrow()
-    for (let i = 0; i < insertIndex.value;i++){
-        accessAnim(linkedlist[i],nextDelay)
-        nextDelay+=animationDuration
-        accessAnim(animationContainer.children.item(i*2+1),nextDelay)
-        nextDelay+=animationDuration
-    }
+    animationContainer.insertBefore(variable, linkedlist[insertIndex.value])
+    animationContainer.insertBefore(arrow, linkedlist[insertIndex.value])
+    linkedlist.splice(insertIndex.value,0,variable)
+    let nextDelay=chainAnimation(insertIndex.value)
     for (let i = insertIndex.value; i <linkedlist.length;i++){
         forwardAnim(linkedlist[i],nextDelay)
         forwardAnim(animationContainer.children.item(i*2+1),nextDelay)
     }
     nextDelay+=animationDuration
-    setTimeout(() => {
-        animationContainer.insertBefore(variable, linkedlist[insertIndex.value])
-        animationContainer.insertBefore(arrow, linkedlist[insertIndex.value])
-        linkedlist.splice(insertIndex.value,0,variable)
-    }, nextDelay)
+    setTimeout(() => {  variable.style.display="flex"
+                        arrow.style.display="block"}, nextDelay)
+    nextDelay=appearAnim(variable,nextDelay)
+    rotateAppearAnim(arrow,nextDelay)
+}
+function linkedListRemove(){
+    let nextDelay=chainAnimation(removeIndex.value)
 }
 setForm.addEventListener('submit', (e) => {
     e.preventDefault()

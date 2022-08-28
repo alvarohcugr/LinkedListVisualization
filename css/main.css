@@ -3,7 +3,7 @@
     --background: #333;
     --fontColor: #fff;
     --mainColor: linear-gradient(90deg, #646AEC, #258EF6);
-    --varAnimationDuration: 400ms;
+    --varAnimationDuration: 600ms;
     --inputBackground: #fff;
 }
 html {
@@ -17,7 +17,7 @@ body {
     min-height: 100vh;
 }
 .variable {
-    display: flex;
+    display: none;
     margin:10px;
     height:3em;
     width:3em;
@@ -26,15 +26,9 @@ body {
     justify-content: center;
     background: var(--mainColor);
     color:white;
-    animation-name: appear;
-    animation-duration: var(--varAnimationDuration);
-    animation-fill-mode: forwards;
 }
 i[class="fa-solid fa-arrow-right-long"]{
-    animation-name: rotate-appear;
-    animation-duration: var(--varAnimationDuration);
-    animation-delay: var(--varAnimationDuration);
-    animation-fill-mode: forwards;
+    display: none;
     transform: scale(0);
 }
 .animation-container {
