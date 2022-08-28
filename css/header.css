@@ -1,0 +1,30 @@
+
+header .container {
+      display: flex;
+      align-items: center;
+      background-color: var(--headerBackground);
+      padding: 0.5rem;
+      color:var(--fontColor);
+      margin:0;
+      font-size: 2rem;
+      justify-content: space-between;
+      font-size: 7vw;
+}
+header .text-container{
+      display: inline-block;
+}
+header .word-style {
+      font-style: italic;
+      color: var(--mainColor);
+}
+header button {
+      border: none;
+      background-color: rgba(0, 0, 0, 0);
+      cursor: pointer;
+      color: var(--fontColor);
+}
+
+header button:hover {
+      color: var(--background);
+      transition: .4s;
+} 

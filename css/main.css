@@ -1,0 +1,72 @@
+:root {
+    --headerBackground: #555;
+    --background: #333;
+    --fontColor: #fff;
+    --mainColor: linear-gradient(90deg, #646AEC, #258EF6);
+    --varAnimationDuration: 400ms;
+    --inputBackground: #fff;
+}
+html {
+    font-size: 16px;
+}
+body {
+    background-color: var(--background);
+    font-family: 'Alegreya Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.variable {
+    display: flex;
+    margin:10px;
+    height:3em;
+    width:3em;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    background: var(--mainColor);
+    color:white;
+    animation-name: appear;
+    animation-duration: var(--varAnimationDuration);
+    animation-fill-mode: forwards;
+}
+i[class="fa-solid fa-arrow-right-long"]{
+    animation-name: rotate-appear;
+    animation-duration: var(--varAnimationDuration);
+    animation-delay: var(--varAnimationDuration);
+    animation-fill-mode: forwards;
+    transform: scale(0);
+}
+.animation-container {
+    display:flex;
+    flex-wrap: wrap;
+    margin-bottom:5px;
+    font-size: 3rem;
+    color:var(--fontColor);
+    align-items: center;
+}
+.animation-container div{
+    font-size: 1.25rem;
+}
+@keyframes appear {
+    0% {
+        transform:scale(0);
+    }
+    90% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+@keyframes rotate-appear {
+    0% {
+        transform:scale(0) rotate(-30deg);
+    }
+    70% {
+        transform: scale(1.2) rotate(30deg);
+    }
+    100% {
+        transform: scale(1) rotate(0);
+    }
+}
