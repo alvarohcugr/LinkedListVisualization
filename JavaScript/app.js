@@ -6,33 +6,33 @@ var root = document.querySelector(':root');
 var rootStyles = getComputedStyle(root);
 var animationDuration=parseInt(rootStyles.getPropertyValue('--varAnimationDuration').slice(0,-2));
 var linkedlist = []
-function accessAnim(el,del){
-    el.animate([
+var nextDelay = 0
+async function accessAnim(el){
+    nextDelay+=animationDuration
+    await el.animate([
         {transform: "scale(1)", offset:0},
         {transform: "scale(1.2)", offset:.5},
         {transform: "scale(1)", offset:1}
     ], {
         duration: animationDuration,
         easing: "ease-in-out",
-        delay:del,
-    })
+    }).finished
 }
-function appearAnim(el, del){
-    el.animate([
+async function appearAnim(el){
+    el.style.display = "flex"
+    await el.animate([
         {transform:"scale(0)", offset:0},
         {transform:"scale(1.2)", offset:.5},
         {transform:"scale(1)", offset:1}
     ], {
         duration: animationDuration,
         fill:"forwards",
-        easing: "ease-in",
-        delay:del,
-    })
-    setTimeout(()=>{el.style.display = "flex"}, del+1)
-    return del+animationDuration
+        easing: "ease-in"
+    }).finished
 }
-function rotateAppearAnim(el, del){
-    el.animate([
+async function rotateAppearAnim(el){
+    el.style.display = "block"
+    await el.animate([
         {transform:"scale(0) rotate(-30deg)", offset:0},
         {transform:"scale(1.2) rotate(30deg)", offset:.7},
         {transform:"scale(1) rotate(0)", offset:1}
@@ -40,13 +40,13 @@ function rotateAppearAnim(el, del){
         duration: animationDuration,
         fill:"forwards",
         easing: "ease-in",
-        delay:del,
-    })
-    setTimeout(()=>{el.style.display = "block"}, del+1)
-    return del+animationDuration
+    }).finished
 }
-function updateAnim(el,del){
-    el.animate([
+async function updateAnim(el, dat){
+    setTimeout(()=>{
+        linkedlist[setIndex.value].innerText=dat
+    }, animationDuration)
+    await el.animate([
         {transform: "scale(1)", offset:0},
         {background:"lawngreen", offset:0.2},
         {transform: "scale(1.2)", offset:.5},
@@ -55,26 +55,31 @@ function updateAnim(el,del){
     ], {
         duration: animationDuration*2,
         easing: "ease-in-out",
-        delay:del,
-    })
+    }).finished
 }
 function forwardAnim(el){
     let dist=138
-    el.animate([
+    return el.animate([
         {transform: "translateX(" + dist +"px)", offset:1}
     ], {
         duration: animationDuration,
-        easing: "ease-in-out"
-    })
+        easing: "ease-in-out",
+    }).finished
 }
-function createSpace(idx,del){
-    setTimeout(()=> {
-        for (let i = idx; i <linkedlist.length;i++){
-            forwardAnim(linkedlist[i])
-            forwardAnim(animationContainer.children.item(i*2+1))
-        }
-    }, del)
-    return del+animationDuration
+async function chainAnimation(idx){
+    for (let i = 0; i < idx;i++){
+        await accessAnim(linkedlist[i])
+        let arrow = animationContainer.children.item(i*2+1)
+        await accessAnim(arrow)
+    }
+}
+async function createSpace(idx){
+    let lastFinished
+    for (let i = idx; i <linkedlist.length;i++){
+        forwardAnim(linkedlist[i])
+        lastFinished=forwardAnim(animationContainer.children.item(i*2+1))
+    }
+    await lastFinished
 }
 function createVar(data){
     const variable = document.createElement("div")
@@ -87,48 +92,36 @@ function createArrow(){
     arrow.classList.add("fa-solid", "fa-arrow-right-long")
     return arrow
 }
-function chainAnimation(idx){
-    let nextDelay=0
-    for (let i = 0; i < idx;i++){
-        accessAnim(linkedlist[i],nextDelay)
-        nextDelay+=animationDuration
-        let arrow = animationContainer.children.item(i*2+1)
-        accessAnim(arrow,nextDelay)
-        nextDelay+=animationDuration
-    }
-    return nextDelay
+async function linkedListSet(){
+    await chainAnimation(setIndex.value)
+    await updateAnim(linkedlist[setIndex.value], setData.value)
 }
-function linkedListSet(){
-    let nextDelay = chainAnimation(setIndex.value)
-    updateAnim(linkedlist[setIndex.value],nextDelay)
-    nextDelay+=animationDuration
-    setTimeout(() => {linkedlist[setIndex.value].innerText=setData.value}, nextDelay)
-}
-function linkedListAdd(){
+async function linkedListAdd(){
     const variable=createVar(addData.value)
     const arrow=createArrow()
     linkedlist[linkedlist.length]=variable
     animationContainer.appendChild(variable)
     animationContainer.appendChild(arrow)
-    let nextDelay=chainAnimation(linkedlist.length-1)
-    nextDelay=appearAnim(variable,nextDelay)
-    nextDelay=rotateAppearAnim(arrow, nextDelay)
+    await chainAnimation(linkedlist.length-1)
+    await appearAnim(variable)
+    await rotateAppearAnim(arrow)
+    nextDelay=0
 }
-function linkedListInsert(){
+async function linkedListInsert(){
     const variable=createVar(insertData.value)
     const arrow=createArrow()
     animationContainer.insertBefore(variable, linkedlist[insertIndex.value])
     animationContainer.insertBefore(arrow, linkedlist[insertIndex.value])
     linkedlist.splice(insertIndex.value,0,variable)
-    let nextDelay=chainAnimation(insertIndex.value)
-    nextDelay=createSpace(insertIndex.value,nextDelay)
-    setTimeout(() => {  variable.style.display="flex"
-                        arrow.style.display="block"}, nextDelay)
-    nextDelay=appearAnim(variable,nextDelay)
-    rotateAppearAnim(arrow,nextDelay)
+    await chainAnimation(insertIndex.value)
+    await createSpace(insertIndex.value)
+    variable.style.display="flex"
+    arrow.style.display="block"
+    await appearAnim(variable)
+    await rotateAppearAnim(arrow)
 }
 function linkedListRemove(){
-    let nextDelay=chainAnimation(removeIndex.value)
+    chainAnimation(removeIndex.value)
 }
 setForm.addEventListener('submit', (e) => {
     e.preventDefault()
