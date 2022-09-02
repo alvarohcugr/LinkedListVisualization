@@ -58,15 +58,23 @@ function updateAnim(el,del){
         delay:del,
     })
 }
-function forwardAnim(el, del){
+function forwardAnim(el){
     let dist=138
     el.animate([
         {transform: "translateX(" + dist +"px)", offset:1}
     ], {
         duration: animationDuration,
-        easing: "ease-in-out",
-        delay:del,
+        easing: "ease-in-out"
     })
+}
+function createSpace(idx,del){
+    setTimeout(()=> {
+        for (let i = idx; i <linkedlist.length;i++){
+            forwardAnim(linkedlist[i])
+            forwardAnim(animationContainer.children.item(i*2+1))
+        }
+    }, del)
+    return del+animationDuration
 }
 function createVar(data){
     const variable = document.createElement("div")
@@ -113,11 +121,7 @@ function linkedListInsert(){
     animationContainer.insertBefore(arrow, linkedlist[insertIndex.value])
     linkedlist.splice(insertIndex.value,0,variable)
     let nextDelay=chainAnimation(insertIndex.value)
-    for (let i = insertIndex.value; i <linkedlist.length;i++){
-        forwardAnim(linkedlist[i],nextDelay)
-        forwardAnim(animationContainer.children.item(i*2+1),nextDelay)
-    }
-    nextDelay+=animationDuration
+    nextDelay=createSpace(insertIndex.value,nextDelay)
     setTimeout(() => {  variable.style.display="flex"
                         arrow.style.display="block"}, nextDelay)
     nextDelay=appearAnim(variable,nextDelay)
