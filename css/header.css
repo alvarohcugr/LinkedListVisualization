@@ -8,14 +8,15 @@ header .container {
       margin:0;
       font-size: 2rem;
       justify-content: space-between;
-      font-size: 7vw;
+      font-size: 2em;
 }
 header .text-container{
-      display: inline-block;
+      display: inline;
+      justify-content: center;
 }
 header .word-style {
-      font-style: italic;
-      color: var(--mainColor);
+      color: #646AEC;
+      font-weight: 800;
 }
 header button {
       border: none;
@@ -26,5 +27,5 @@ header button {
 
 header button:hover {
       color: var(--background);
-      transition: .4s;
+      transition: .3s;
 } 
