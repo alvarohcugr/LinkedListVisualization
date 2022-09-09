@@ -5,6 +5,7 @@
     --mainColor: linear-gradient(90deg, #646AEC, #258EF6);
     --varAnimationDuration: 600ms;
     --inputBackground: #fff;
+    --settingsContainerTop:60px
 }
 html {
     font-size: 16px;

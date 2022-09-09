@@ -22,6 +22,7 @@ var root = document.querySelector(':root');
 var rootStyles = getComputedStyle(root);
 var animationDuration=parseInt(rootStyles.getPropertyValue('--varAnimationDuration').slice(0,-2));
 
+
 var linkedlist = []
 async function accessAnim(el){
     await el.animate([
@@ -59,7 +60,7 @@ async function rotateAppearAnim(el, dir="normal"){
 }
 async function updateAnim(el, dat){
     setTimeout(()=>{
-        linkedlist[idx].innerText=dat
+        el.innerText=dat
     }, animationDuration)
     await el.animate([
         {transform: "scale(1)", offset:0},

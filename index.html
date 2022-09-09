@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/form.css">
     <link rel="stylesheet" type="text/css" href="css/responsive.css">
+    <link rel="stylesheet" type="text/css" href="css/settings.css">
     <script src="https://kit.fontawesome.com/22b6d17b31.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
@@ -26,17 +27,25 @@
             </button>
         </div>
     </header>
+    <div class="settings-container hided">
+        <hr/>
+        <h2>Settings</h2>
+        <hr/>
+        <label for="speed-input">Animation Speed</label>
+        <input id="speed-input" type="range" min="0" max="2000" name="speed-input">
+        <output id="speed-output">1000</output>
+    </div>
     <div class="animation-container">
 
     </div>
     <div class="form-container">
         <form method="POST" id="set-form">
-            <input type="text" name="set-index" id="set-index" placeholder="Index">
+            <input type="text" name="set-index" id="set-index" placeholder="Index" autocomplete="off">
             <div class="error-container">
                 <i class="fa-solid fa-circle-exclamation"></i>
                 <span class="error-message"></span>
             </div>
-            <input type="text" name="set-data" id="set-data" placeholder="Data">
+            <input type="text" name="set-data" id="set-data" placeholder="Data" autocomplete="off">
             <div class="error-container">
                 <i class="fa-solid fa-circle-exclamation"></i> 
                 <span class="error-message"></span>
@@ -44,12 +53,12 @@
             <input type="submit" value="Set">
         </form>
         <form method="POST" id="insert-form">
-            <input type="text" name="insert-index" id="insert-index" placeholder="Index">
+            <input type="text" name="insert-index" id="insert-index" placeholder="Index" autocomplete="off">
             <div class="error-container">
                 <i class="fa-solid fa-circle-exclamation"></i>
                 <span class="error-message"></span>
             </div>
-            <input type="text" name="insert-data" id="insert-data" placeholder="Data">
+            <input type="text" name="insert-data" id="insert-data" placeholder="Data" autocomplete="off">
             <div class="error-container">
                 <i class="fa-solid fa-circle-exclamation"></i>
                 <span class="error-message"></span>
@@ -57,7 +66,7 @@
             <input type="submit" value="Insert">
         </form>
         <form method="POST" id="add-form">
-            <input type="text" name="add-data" id="add-data" placeholder="Data">
+            <input type="text" name="add-data" id="add-data" placeholder="Data" autocomplete="off">
             <div class="error-container">
                 <i class="fa-solid fa-circle-exclamation"></i>
                 <span class="error-message"></span>
@@ -65,7 +74,7 @@
             <input type="submit" value="Add">
         </form>
         <form method="POST" id="remove-form">
-            <input type="text" name="remove-index" id="remove-index" placeholder="Index">
+            <input type="text" name="remove-index" id="remove-index" placeholder="Index" autocomplete="off">
             <div class="error-container">
                 <i class="fa-solid fa-circle-exclamation"></i>
                 <span class="error-message"></span>
@@ -74,6 +83,7 @@
         </form>
     </div>
     <script src="JavaScript/theme.js"></script>
+    <script src="JavaScript/settings.js"></script>
     <script src="JavaScript/formValidation.js"></script>
     <script src="JavaScript/app.js"></script>
 </body>
