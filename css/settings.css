@@ -1,0 +1,30 @@
+.settings-container {
+    opacity: 95%;
+    display:inline-block;
+    position:fixed;
+    top:var(--settingsContainerTop);
+    width: 15rem;   
+    color: var(--fontColor);
+    background-color: var(--headerBackground);
+    transition: transform .7s;
+    z-index: 1;
+    padding: 1rem;
+}
+.settings-container h2{
+    text-align: center;
+}
+input[type="range"]{
+    background: rgba(0, 0, 0, 0);
+}
+input[type="range"]::-moz-range-progress {
+    background: var(--mainColor);
+}
+input[type="range"]::-moz-range-track {
+    background: var(--fontColor);
+}
+input[type="range"]::-moz-focus-inner {
+    background: var(--mainColor);
+}
+.settings-container.hided{
+    transform: translateX(-100%);  
+}
